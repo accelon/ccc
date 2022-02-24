@@ -1,0 +1,12 @@
+{
+    "name":"ccc",
+    "title": "莊春江巴利藏中譯|莊",
+    "description":"從莊春江工作站下載版網頁轉成offtext格式，並分段分句。",
+    "license": "CC0",
+    "lang":"zh",
+    "template":"cs",
+    "textOnly":true,
+    "label":"l",
+    "homepage":"https://github.com/accelon/ccc",
+    "files":"dn?.off,sn?.off,an?.off,an??.off"
+}
