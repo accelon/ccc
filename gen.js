@@ -19,12 +19,12 @@ books.forEach(book=>{
     const files=filesOfBook(book,ccc_folder);
     const [bookcontent,bookmapping]=combineHTML(files,ccc_folder,book);
     let outcontent=bookcontent;
-    const sccontent=readTextLines(scfolder+book+'.off');
+    const sccontent=readTextLines(scfolder+book+'.sc.off');
     outcontent=autoAlign(outcontent.join("\n").split('\n'),sccontent);
     if (outcontent.length!==sccontent.length) {
         console.log('align failed',book)
     }
-    if (outcontent.length && writeChanged(desfolder+book+'.off',outcontent.join('\n'))){
+    if (outcontent.length && writeChanged(desfolder+book+'.ccc.off',outcontent.join('\n'))){
         console.log('written',book, outcontent.length)
     }
     if (books.length) {
