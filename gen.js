@@ -1,6 +1,6 @@
 /* generate offtext from CCC html */
 import {kluer, writeChanged,nodefs, readTextLines,} from 'pitaka/cli'
-import { autoAlign } from 'pitaka/utils';
+import { autoAlign } from 'pitaka/align';
 const {yellow} =kluer;
 await nodefs
 import {  filesOfBook,combineHTML } from './ccc-folder.js';
@@ -19,7 +19,7 @@ books.forEach(book=>{
     const files=filesOfBook(book,ccc_folder);
     const [bookcontent,bookmapping]=combineHTML(files,ccc_folder,book);
     let outcontent=bookcontent;
-    const sccontent=readTextLines(scfolder+book+'.sc.off');
+    const sccontent=readTextLines(scfolder+book+'.ms.off');
     outcontent=autoAlign(outcontent.join("\n").split('\n'),sccontent);
     if (outcontent.length!==sccontent.length) {
         console.log('align failed',book)

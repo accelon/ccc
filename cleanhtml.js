@@ -1,5 +1,6 @@
 import {cs} from 'pitaka/meta'
-import { autoChineseBreak, patchBuf, toBase26 } from 'pitaka/utils'
+import {  patchBuf, toBase26 } from 'pitaka/utils'
+import { autoChineseBreak,combineHeaders} from 'pitaka/align'
 import {errata_zh, errata_pli} from './errata.js'
 import { getSNParanum, getANParanum, getAnVagga } from './paranum.js';
 const VOLPNCluster={};
@@ -191,7 +192,8 @@ export const cleanHTML=(content,fn,bkid,firstFile)=>{
             zh='^bk#'+bkid+headers+zh.substr(at);
         }
     } else {
-        zh=ensurefirstLineHasPN(zh);
+        zh=combineHeaders(zh);
+        // zh=ensurefirstLineHasPN(zh);
     }
 
     //品名接小標
