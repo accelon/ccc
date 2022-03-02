@@ -1,7 +1,7 @@
 /* generate offtext from CCC html */
 import {kluer, writeChanged,nodefs, readTextLines,} from 'pitaka/cli'
 import { autoAlign } from 'pitaka/align';
-const {yellow} =kluer;
+const {yellow,red} =kluer;
 await nodefs
 import {  filesOfBook,combineHTML } from './ccc-folder.js';
 import {sc} from 'pitaka/meta';
@@ -24,8 +24,11 @@ books.forEach(book=>{
     if (outcontent.length!==sccontent.length) {
         console.log('align failed',book)
     }
+    const linecountwarning=outcontent.length!==sccontent.length?red("!="+sccontent.length):'';
     if (outcontent.length && writeChanged(desfolder+book+'.ccc.off',outcontent.join('\n'))){
-        console.log('written',book, outcontent.length)
+        console.log('written',book,  'line count',outcontent.length,linecountwarning)
+    } else {
+        console.log('same',book,  'line count',outcontent.length,linecountwarning);
     }
     if (books.length) {
         nikayamapping.push(...bookmapping);

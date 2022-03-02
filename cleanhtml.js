@@ -70,7 +70,7 @@ const parseSuttaName=(str,bkpf,fn,pnum)=>{
 }
 
 export const completeBook=(bookid,files)=>{
-    console.log("complete",bookid,'files',files.length);
+    // console.log("complete",bookid,'files',files.length);
     const vol=bookid.substr(2);
     if (bookid.substr(0,2)=='sn') {
         for (let i in VOLPNCluster) {
