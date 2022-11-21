@@ -1,20 +1,18 @@
-import {cs} from 'pitaka/meta'
-import {  patchBuf, toBase26 } from 'pitaka/utils'
-import { autoChineseBreak,combineHeaders} from 'pitaka/align'
+import {meta_cs,patchBuf, toBase26,autoChineseBreak,combineHeaders} from 'ptk/nodebundle.cjs'
 import {errata_zh, errata_pli} from './errata.js'
 import { getSNParanum, getANParanum, getAnVagga } from './paranum.js';
 const VOLPNCluster={};
 const buildPNCluster=()=>{
     let vol=0;
-    for (let id in cs.FirstPN) {
+    for (let id in meta_cs.FirstPN) {
         if (id[0]==='s') {
-            const pn=cs.FirstPN[id];
+            const pn=meta_cs.FirstPN[id];
             if (pn===1) vol++;
             VOLPNCluster[vol+'.'+pn]=id;
         }
     }
 }
-buildPNCluster();
+buildPNCluster()
 const volpnOf=fn=>{
     const fnm=fn.match(/(\d+)/);
     const n=parseInt(fnm[1]); //莊的編號
@@ -39,7 +37,7 @@ const parseSuttaName=(str,bkpf,fn,pnum)=>{
         if (!m) console.log("wrong pattern",fn)
         const vol=volpnOf(fn);
         const volpn=vol+'.'+pnum;
-        clusterid=VOLPNCluster[volpn];
+        clusterid=meta_cs.chunkByVolPn[volpn];
         if (clusterid) delete VOLPNCluster[volpn];//for residue check
         title=m[3].replace('/','')||'';//SN1527.htm 無經名
         paranum=pnum;
@@ -59,12 +57,12 @@ const parseSuttaName=(str,bkpf,fn,pnum)=>{
         title=m[2];
         paranum=pnum;
     }
-    const firstpara=(clusterid)?cs.firstParanumOf(clusterid):clusterid;
+    const firstpara=(clusterid)?meta_cs.firstParanumOf(clusterid):clusterid;
 
     if (firstpara) {
-        return (title?'^h['+title+']':'')+'^ck#'+clusterid+ '^n'+firstpara+' ';
+        return (title?'^ck#'+clusterid+'('+title+')':'')+'^n'+firstpara+' ';
     } else if (paranum) {
-        return (title?'^h['+title+']':'')+(paranum&&paranum!=="*"?'^n'+paranum:'') +' ';
+        return (title?'^h('+title+')':'')+(paranum&&paranum!=="*"?'^n'+paranum:'') +' ';
     }
     return '';
 }
@@ -74,13 +72,13 @@ export const completeBook=(bookid,files)=>{
     const vol=bookid.substr(2);
     if (bookid.substr(0,2)=='sn') {
         for (let i in VOLPNCluster) {
-            if (i.substr(0,1)==vol) {
+            if (i.substring(0,1)==vol) {
                 console.log('residue of sn',i);
             }
         }
     }
 }
-
+export const ABulk={"DN/DN01":'^ak#dn(長部)',"MN/MN01":'^ak#mn(中部)',"SN/SN01":'^ak#sn(相應部)',"AA/AN01":'^ak#an(增支部)'}
 export const cleanHTML=(content,fn,bkid,firstFile)=>{
     const zhstart=content.indexOf('<div class="nikaya">');
     const palistart=content.indexOf('<div class="pali">')
@@ -155,9 +153,8 @@ export const cleanHTML=(content,fn,bkid,firstFile)=>{
     zh=zh.replace(/<br>\^/g,'^')
     zh=zh.replace(/([^h])\[([\u3400-\u9fff]+)\]/g,'$1〔$2〕'); //半形[]轉全形
 
-
     //是小標題
-    zh=zh.replace(/<br>([\(\)\d\- \.\u3400-\u9fff‧〔〕]+)/g,'^h[$1]');
+    zh=zh.replace(/<br>([\(\)\d\- \.\u3400-\u9fff‧〔〕]+)/g,'^h($1)');
 
 
 
@@ -189,7 +186,7 @@ export const cleanHTML=(content,fn,bkid,firstFile)=>{
             console.log('missing ^ck in first file')
         } else {
             const headers=zh.substr(0,at).replace(/\n/g,'');
-            zh='^bk#'+bkid+headers+zh.substr(at);
+            zh=(ABulk[fn.replace(/\.htm/,'')]||'')+'^bk#'+bkid+headers+zh.substr(at);
         }
     } else {
         zh=combineHeaders(zh);

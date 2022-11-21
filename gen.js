@@ -1,10 +1,8 @@
 /* generate offtext from CCC html */
-import {kluer, writeChanged,nodefs, readTextLines,} from 'pitaka/cli'
-import { autoAlign } from 'pitaka/align';
-const {yellow,red} =kluer;
+import {meta_sc,autoAlign, writeChanged,nodefs, readTextLines,} from 'ptk/nodebundle.cjs'
+import {yellow,red} from 'ptk/cli/colors.cjs';
 await nodefs
 import {  filesOfBook,combineHTML } from './ccc-folder.js';
-import {sc} from 'pitaka/meta';
 
 const ccc_folder='html/';
 const desfolder='off/';
@@ -12,8 +10,7 @@ const scfolder='../sc/pli/'
 console.log(yellow('syntax'),'node gen [bkid/bkpf]');
 const pat=process.argv[2]||"dn1"
 
-const pitaka=sc.pitakaOf(pat);
-const books=sc.booksOf(pat);
+const books=meta_sc.booksOf(pat);
 const nikayamapping=[];
 books.forEach(book=>{
     const files=filesOfBook(book,ccc_folder);

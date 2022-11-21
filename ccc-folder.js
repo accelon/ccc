@@ -1,6 +1,5 @@
 /* ccc files by book code*/
-import { readTextContent} from 'pitaka/cli'
-import { sc } from 'pitaka/meta';
+import { meta_sc,readTextContent} from 'ptk/nodebundle.cjs'
 import {cleanHTML,completeBook} from "./cleanhtml.js"
 // import { breakMN } from './breakmn.js';
 export const FilesOfBook={
@@ -27,7 +26,7 @@ export const FilesOfBook={
         an10:["AN/AN{1533-1741}"], 
         an11:["AN/AN{1742-1764}"], 
 }
-export const filesOfBook=(pat,rootfolder)=>sc.getFilesOfBook(pat,FilesOfBook,rootfolder);
+export const filesOfBook=(pat,rootfolder)=>meta_sc.getFilesOfBook(pat,FilesOfBook,rootfolder);
 
 const combineMN10=zh=>{////合併119-135
     const from=zh.indexOf('^n120');
