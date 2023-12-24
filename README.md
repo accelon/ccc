@@ -1,6 +1,14 @@
 # ccc
 莊春江
 
+相應 增支 未句子對齊。
+
+## build steps
+
+    ptk sent
+    產生句子 sent.tsv
+    
+    build-data.cmd
 
 xiaofei 2023.8.6  dn1.ccc.off to check
 1、n144，612行：“凡那些属于过去时间的沙门、婆罗门……” 杭州佛学佛版无对应；Suttacentral版为123行；
